@@ -54,6 +54,19 @@ python -m src.train --data_dir /duong_dan/NEU-CLS.zip --run_name quick_test
 python -m src.train   --data_dir /duong_dan/NEU-CLS.zip   --project csc4005-lab1-neu-mlp   --run_name baseline_adamw   --optimizer adamw   --lr 0.001   --weight_decay 0.0001   --dropout 0.3   --epochs 20   --batch_size 32   --img_size 64   --patience 5   --augment   --use_wandb
 ```
 
+## 4.1 Các cấu hình đã chạy
+Đã chạy 5 cấu hình để so sánh:
+
+| Run Name | Optimizer | LR | Weight Decay | Dropout | Patience | Best Val Acc | Test Acc |
+|----------|-----------|----|-------------|---------|----------|-------------|----------|
+| **baseline_adamw** | adamw | 0.001 | 0.0001 | 0.3 | 5 | **41.85%** | **38.15%** |
+| baseline_sgd | sgd | 0.001 | 0.0001 | 0.3 | 5 | 24.81% | 25.93% |
+| baseline_adamw_higher_reg | adamw | 0.001 | 0.001 | 0.5 | 5 | 38.15% | 36.30% |
+| baseline_adamw_lr_01 | adamw | 0.01 | 0.0001 | 0.3 | 5 | 26.67% | 22.22% |
+| baseline_adamw_patience_10 | adamw | 0.001 | 0.0001 | 0.3 | 10 | 41.85% | 38.15% |
+
+**Best config**: `baseline_adamw` (AdamW, LR=0.001, weight_decay=0.0001, dropout=0.3)
+
 ## 5. Kết quả đầu ra
 Mỗi run sẽ được lưu vào `outputs/<run_name>/` gồm:
 - `best_model.pt`
@@ -62,11 +75,20 @@ Mỗi run sẽ được lưu vào `outputs/<run_name>/` gồm:
 - `confusion_matrix.png`
 - `metrics.json`
 
+**Các runs đã chạy:**
+- `outputs/baseline_adamw/` - **Best model** (val acc: 41.85%, test acc: 38.15%)
+- `outputs/baseline_sgd/` - SGD baseline (val acc: 24.81%)
+- `outputs/baseline_adamw_higher_reg/` - Higher regularization (val acc: 38.15%)
+- `outputs/baseline_adamw_lr_01/` - Higher LR (val acc: 26.67%)
+- `outputs/baseline_adamw_patience_10/` - Higher patience (val acc: 41.85%)
+
 ## 6. W&B
 Tên project thống nhất là:
 ```text
 csc4005-lab1-neu-mlp
 ```
+
+**Dashboard với 5 runs đã chạy:** https://wandb.ai/chungbestriven-dainam-vietnam/csc4005-lab1-neu-mlp
 
 Xem hướng dẫn chi tiết tại `docs/WANDB_GUIDE.md`.
 
@@ -75,3 +97,5 @@ Xem hướng dẫn chi tiết tại `docs/WANDB_GUIDE.md`.
 python ci/check_structure.py
 python ci/smoke_train.py
 ```
+
+**Status:** ✅ Repo đã chạy thành công với 5 cấu hình, best model đạt 41.85% val accuracy.

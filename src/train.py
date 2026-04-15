@@ -30,7 +30,7 @@ except ImportError:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Train MLP for NEU surface defect classification')
-    parser.add_argument('--data_dir', type=str, required=True, help='Đường dẫn tới NEU-CLS.zip hoặc thư mục dữ liệu đã giải nén')
+    parser.add_argument('--data_dir', type=str, default='D:\\NEU-CLS', help='Đường dẫn tới NEU-CLS.zip hoặc thư mục dữ liệu đã giải nén')
     parser.add_argument('--project', type=str, default='csc4005-lab1-neu-mlp')
     parser.add_argument('--run_name', type=str, default='debug_run')
     parser.add_argument('--optimizer', type=str, choices=['adamw', 'sgd'], default='adamw')
@@ -193,6 +193,18 @@ def main() -> None:
         'classification_report': report,
         'confusion_matrix': cm.tolist(),
         'resolved_data_dir': data.resolved_data_dir,
+        'seed': args.seed,
+        'val_size': args.val_size,
+        'test_size': args.test_size,
+        'batch_size': args.batch_size,
+        'optimizer': args.optimizer,
+        'lr': args.lr,
+        'weight_decay': args.weight_decay,
+        'dropout': args.dropout,
+        'augment': args.augment,
+        'img_size': args.img_size,
+        'scheduler': args.scheduler,
+        'run_name': args.run_name,
     }
     save_json(metrics, output_dir / 'metrics.json')
     print(f'Best val acc: {best_val_acc:.4f}')
